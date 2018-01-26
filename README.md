@@ -1,0 +1,1 @@
+**BibleCompi** is a lightweight Bible translations comparator, taking the text from the public Bible.org API
