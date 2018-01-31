@@ -11,6 +11,10 @@ public class Verse {
     public final int number;
     public final int chapter;
     public final String book;
+    private String fullReference;
+    private String nextVerseReference;
+    private String previousVerseReference;
+    private String copyright;
     public final Translation translation;
 
     public Verse(Translation translation, String book, int chapter, int number) {
@@ -18,6 +22,7 @@ public class Verse {
         this.chapter = chapter;
         this.book = book;
         this.translation = translation;
+
         text = getVerse();
     }
 
@@ -29,6 +34,10 @@ public class Verse {
         String result = invoker.makeGetRequest();
         JsonNode actualObj = getJsonNode(result);
 
+//        System.out.println(actualObj.toString());
+
+        setVerseInfo(actualObj);
+
         return Jsoup.parse( // removes HTML tags
                     actualObj
                             .get("response")
@@ -38,6 +47,48 @@ public class Verse {
                             .asText()
                     ).text()
                     .replaceAll("[0-9]",""); //removes leading numbers representing the verse
+    }
+
+    public String getFullReference() {
+        return fullReference;
+    }
+
+    public String getCopyright() {
+        return copyright;
+    }
+
+    private void setVerseInfo(JsonNode actualObj) {
+        setFullReference(actualObj);
+        setCopyright(actualObj);
+        setNextVerseReference(actualObj);
+        setPreviousVerseReference(actualObj);
+    }
+
+    private void setFullReference(JsonNode actualObj) {
+        fullReference = actualObj.get("response").get("verses").get(0).get("reference").asText();
+    }
+
+    private void setCopyright(JsonNode actualObj) {
+        copyright = Jsoup.parse(actualObj.get("response").get("verses").get(0).get("copyright").asText()).text();
+    }
+
+    private void setNextVerseReference(JsonNode actualObj){
+        nextVerseReference = actualObj.get("response").get("verses").get(0).get("next").get("verse").get("name").asText();
+
+    }
+
+    private void setPreviousVerseReference(JsonNode actualObj){
+        previousVerseReference = actualObj.get("response").get("verses").get(0).get("previous").get("verse").get("name").asText();
+    }
+
+    public Verse getNextVerse(){
+        String[] res = nextVerseReference.split("[\\p{Punct}\\s]+");
+        return new Verse(translation, res[0], Integer.parseInt(res[1]), Integer.parseInt(res[2]));
+    }
+
+    public Verse getPreviousVerse(){
+        String[] res = previousVerseReference.split("[\\p{Punct}\\s]+");
+        return new Verse(translation, res[0], Integer.parseInt(res[1]), Integer.parseInt(res[2]));
     }
 
     private JsonNode getJsonNode(String result) {
