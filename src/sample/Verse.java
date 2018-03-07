@@ -34,8 +34,6 @@ public class Verse {
         String result = invoker.makeGetRequest();
         JsonNode actualObj = getJsonNode(result);
 
-//        System.out.println(actualObj.toString());
-
         setVerseInfo(actualObj);
 
         return Jsoup.parse( // removes HTML tags
@@ -74,7 +72,6 @@ public class Verse {
 
     private void setNextVerseReference(JsonNode actualObj){
         nextVerseReference = actualObj.get("response").get("verses").get(0).get("next").get("verse").get("name").asText();
-
     }
 
     private void setPreviousVerseReference(JsonNode actualObj){
