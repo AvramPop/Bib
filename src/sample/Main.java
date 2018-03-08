@@ -1,5 +1,7 @@
 package sample;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -47,37 +49,12 @@ public class Main extends Application {
         setPrimaryStage(primaryStage);
         initializations();
 
-       // translationChoiceBox.getSelectionModel().select(0);
-
-        translationChoiceBox.getSelectionModel()
-                .selectedItemProperty()
-                .addListener( (ObservableValue<? extends Translation> observable,
-                               Translation oldTranslation,
-                               Translation newTranslation)
-                        -> translation = newTranslation);
+        setupTranslationChoiceBox();
+        setupVerseSearchButton();
+        setupPreviousVerseButton();
+        setupNextVerseButton();
 
 
-        searchButton.setOnAction(event -> {
-            createVerseFromTextField();
-            setVerseLabelFromVerse();
-
-            System.out.println(verse.getNextVerse().text);
-            System.out.println(verse.getPreviousVerse().text);
-
-           // unfocusVerseTextField();
-        });
-
-        previousVerseButton.setOnAction(event -> {
-            verse = verse.getPreviousVerse();
-            setVerseLabelFromVerse();
-            //unfocusVerseTextField();
-        });
-
-        nextVerseButton.setOnAction(event -> {
-            verse = verse.getNextVerse();
-            setVerseLabelFromVerse();
-            //unfocusVerseTextField();
-        });
 
         verseInputGridPane.add(verseReferenceTextField, 0, 0);
         verseInputGridPane.add(translationChoiceBox, 1, 0);
@@ -98,6 +75,44 @@ public class Main extends Application {
         primaryStage.setTitle("BibleCompi");
         primaryStage.setScene(testScene);
         primaryStage.show();
+    }
+
+    private void setupNextVerseButton() {
+        nextVerseButton.setOnAction(event -> {
+            verse = verse.getNextVerse();
+            setVerseLabelFromVerse();
+            //unfocusVerseTextField();
+        });
+    }
+
+    private void setupPreviousVerseButton() {
+        previousVerseButton.setOnAction(event -> {
+            verse = verse.getPreviousVerse();
+            setVerseLabelFromVerse();
+            //unfocusVerseTextField();
+        });
+    }
+
+    private void setupVerseSearchButton() {
+        searchButton.setOnAction(event -> {
+            createVerseFromTextField();
+            setVerseLabelFromVerse();
+
+            //System.out.println(verse.getNextVerse().text);
+            //System.out.println(verse.getPreviousVerse().text);
+
+           // unfocusVerseTextField();
+        });
+    }
+
+    private void setupTranslationChoiceBox() {
+        // translationChoiceBox.getSelectionModel().select(0);
+        translationChoiceBox.getSelectionModel()
+                .selectedItemProperty()
+                .addListener( (ObservableValue<? extends Translation> observable,
+                               Translation oldTranslation,
+                               Translation newTranslation)
+                        -> translation = newTranslation);
     }
 
     private void setPrimaryStage(Stage stage) {
@@ -206,14 +221,30 @@ public class Main extends Application {
 
         Button verseSearchButton = new Button("Bible");
         verseSearchButton.setPrefSize(100, 20);
-        verseSearchButton.setOnAction(event -> border.setLeft(verseSearchRootBox));
+        setupVerseSearchSceneButton(verseSearchButton);
 
         Button wordSearchButton = new Button("Search");
         wordSearchButton.setPrefSize(100, 20);
-        wordSearchButton.setOnAction(event -> border.setLeft(wordSearchRootBox));
+        setupWordSearchSceneButton(wordSearchButton);
 
         hbox.getChildren().addAll(verseSearchButton, wordSearchButton);
 
         return hbox;
+    }
+
+    private void setupVerseSearchSceneButton(Button verseSearchButton) {
+        verseSearchButton.setOnAction(event -> border.setLeft(verseSearchRootBox));
+    }
+
+    private void setupWordSearchSceneButton(Button wordSearchButton) {
+        wordSearchButton.setOnAction(event -> {
+            border.setLeft(wordSearchRootBox);
+            Verse v = new Verse(Translation.NASB, "John", 3, 16);
+            try {
+                v.search("grace");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
