@@ -16,7 +16,9 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
+import javax.print.attribute.standard.MediaSize;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main extends Application {
 
@@ -35,6 +37,9 @@ public class Main extends Application {
     private GridPane buttonsGridPane;
     private static Stage primaryStage;
     private BorderPane border;
+    private TextField wordSearchTextField;// = new PersistentPromptTextField("", "query");
+    private Button wordSearchButton;// = new Button("Search!");
+    private Label searchResultsLabel;// = new Label();
     private HBox hbox;
     private GridPane verseInputGridPane;
     private static final Font ITALIC_FONT =
@@ -46,7 +51,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+
         setPrimaryStage(primaryStage);
+
         initializations();
 
         setupTranslationChoiceBox();
@@ -54,8 +61,20 @@ public class Main extends Application {
         setupPreviousVerseButton();
         setupNextVerseButton();
 
+        setupVerseSearchScene();
+        setupWordSearchScene();
 
+        hbox = addHBox();
+        border.setTop(hbox);
+        border.setLeft(verseSearchRootBox);
 
+        Scene testScene = new Scene(border);
+        primaryStage.setTitle("BibleCompi");
+        primaryStage.setScene(testScene);
+        primaryStage.show();
+    }
+
+    private void setupVerseSearchScene() {
         verseInputGridPane.add(verseReferenceTextField, 0, 0);
         verseInputGridPane.add(translationChoiceBox, 1, 0);
 
@@ -66,15 +85,28 @@ public class Main extends Application {
         verseSearchRootBox.getChildren().addAll(verseInputGridPane,
                                                 buttonsGridPane, verseLabel,
                                                 referenceLabel, copyrightLabel);
+    }
 
-        hbox = addHBox();
-        border.setTop(hbox);
-        border.setLeft(verseSearchRootBox);
+    private void setupWordSearchScene() {
+        setupWordSearchButton();
+        wordSearchRootBox.getChildren().addAll(wordSearchTextField, wordSearchButton, searchResultsLabel);
+    }
 
-        Scene testScene = new Scene(border);
-        primaryStage.setTitle("BibleCompi");
-        primaryStage.setScene(testScene);
-        primaryStage.show();
+    private void setupWordSearchButton() {
+        wordSearchButton.setOnAction(event -> {
+            Verse v = new Verse(Translation.NASB, "John", 3, 16);
+            try {
+                ArrayList<String> arrayList = v.search(wordSearchTextField.getText());
+                StringBuilder sb = new StringBuilder();
+                for(String s : arrayList){
+                    sb.append(s);
+                    sb.append('\n');
+                }
+                searchResultsLabel.setText(sb.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void setupNextVerseButton() {
@@ -175,6 +207,9 @@ public class Main extends Application {
         copyrightLabel = new Label();
         verseReferenceTextField = new PersistentPromptTextField("", "Verse reference");
         verseReferenceTextField.setMaxWidth(200);
+        wordSearchTextField = new PersistentPromptTextField("", "query");
+        wordSearchButton = new Button("Search!");
+        searchResultsLabel = new Label();
 
         unfocusVerseTextFieldAtStart();
     }
@@ -239,12 +274,12 @@ public class Main extends Application {
     private void setupWordSearchSceneButton(Button wordSearchButton) {
         wordSearchButton.setOnAction(event -> {
             border.setLeft(wordSearchRootBox);
-            Verse v = new Verse(Translation.NASB, "John", 3, 16);
+            /*Verse v = new Verse(Translation.NASB, "John", 3, 16);
             try {
                 v.search("grace");
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         });
     }
 }

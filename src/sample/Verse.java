@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Verse {
     public final String text;
@@ -110,7 +111,7 @@ public class Verse {
                     .toString();
     }
 
-    public void search(String query) throws IOException {
+    public ArrayList<String> search(String query) throws IOException {
         StringBuilder stringBuilder = new StringBuilder()
                 .append("https://bibles.org/v2/search.js?query=")
                 .append(query)
@@ -121,11 +122,15 @@ public class Verse {
         RESTInvoker invoker = new RESTInvoker(requestURL, Constants.bibleOrgKey, Constants.bibleOrgPassword);
         String result = invoker.makeGetRequest();
 
+        ArrayList<String> references = new ArrayList<>();
+
         JsonNode arrNode = new ObjectMapper().readTree(result).get("response").get("search").get("result").get("verses");
         if (arrNode.isArray()) {
             for (final JsonNode objNode : arrNode) {
+                references.add(objNode.get("reference").asText());
                 System.out.println(objNode.get("reference"));
             }
         }
+        return references;
     }
 }
