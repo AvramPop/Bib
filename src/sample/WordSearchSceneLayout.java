@@ -1,14 +1,9 @@
 package sample;
 
-import javafx.collections.FXCollections;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-
-import javax.xml.soap.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,14 +14,25 @@ public class WordSearchSceneLayout {
     private static TextField wordSearchTextField;
     private static VBox rootBox;
     private static Label searchResultsLabel;
+    private static WordSearchSceneLayout instance = null;
 
-    public static VBox sceneLayout() {
+    private WordSearchSceneLayout() {
         rootBox = new VBox();
-        wordSearchTextField = new PersistentPromptTextField("", "query");
+        wordSearchTextField = new PersistentPromptTextField("", "Keyword");
         wordSearchButton = new Button("Search!");
         searchResultsLabel = new Label();
         setupWordSearchButton();
-        rootBox.getChildren().addAll(wordSearchTextField, wordSearchButton, searchResultsLabel);
+        rootBox.getChildren().addAll(wordSearchTextField, wordSearchButton);
+    }
+
+    public static WordSearchSceneLayout getInstance() {
+        if(instance == null) {
+            instance = new WordSearchSceneLayout();
+        }
+        return instance;
+    }
+
+    public static VBox sceneLayout() {
         return rootBox;
     }
 
@@ -40,10 +46,11 @@ public class WordSearchSceneLayout {
                 ArrayList<String> arrayList = v.search(wordSearchTextField.getText());
                 StringBuilder sb = new StringBuilder();
                 hyperlinks = new Hyperlink[50];
-                int k = 0;
+                int numberOfHyperlinks = 0;
                 for(String s : arrayList){
                     Hyperlink hyperlink = new Hyperlink();
                     hyperlink.setText(s);
+                   // System.out.println(hyperlink);
                     hyperlink.setOnAction(event1 -> {
                         System.out.println(s);
                         String[] words = s.split("\\s+|(?=\\p{Punct})|(?<=\\p{Punct})");
@@ -58,19 +65,21 @@ public class WordSearchSceneLayout {
                                 Integer.parseInt(words[1]),
                                 Integer.parseInt(words[3]));
 
-                        System.out.println(v2.text);
+                      //  System.out.println(v2.text);
 
                     });
-                    hyperlinks[k] = hyperlink;
-                    k++;
-                    sb.append(s);
-                    sb.append('\n');
+                    hyperlinks[numberOfHyperlinks] = hyperlink;
+                    numberOfHyperlinks++;
                 }
-                for(Hyperlink hy : hyperlinks){
-                    rootBox.getChildren().add(hy); //TODO check exception
+                GridPane hyperlinksGridPane = new GridPane();
+                for(int i = 0; i < numberOfHyperlinks; i++){
+                    System.out.println(hyperlinks[i]);
+                    hyperlinksGridPane.add(hyperlinks[i], 0, i);
                 }
-                searchResultsLabel.setText(sb.toString());
-                //  wordSearchRootBox.getChildren().addAll(hyperlinks);
+                /*if(rootBox.getChildren().get(rootBox.getChildren().size() - 1).getClass() == GridPane.class){
+                    rootBox.getChildren().remove(rootBox.getChildren().size() - 1);
+                } //removes last set of hyperlinks (is exists) in order to add the result of the new one*/
+                rootBox.getChildren().add(hyperlinksGridPane);
             } catch (IOException e) {
                 e.printStackTrace();
             }

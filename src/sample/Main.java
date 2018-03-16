@@ -7,24 +7,32 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class Main extends Application {
 
     private static Stage primaryStage;
     private BorderPane border;
+    private VerseSearchSceneLayout verseSearchSceneLayout;
+    private WordSearchSceneLayout wordSearchSceneLayout;
     private HBox hbox;
+    private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     @Override
     public void start(Stage primaryStage) throws IOException {
 
         setPrimaryStage(primaryStage);
 
+        verseSearchSceneLayout = VerseSearchSceneLayout.getInstance();
+        wordSearchSceneLayout = WordSearchSceneLayout.getInstance();
+
         border = new BorderPane();
         border.setPrefSize(1000, 1000);
 
         hbox = addHBox();
         border.setTop(hbox);
-        border.setLeft(VerseSearchSceneLayout.sceneLayout());
+
+        border.setLeft(verseSearchSceneLayout.sceneLayout());
 
         Scene testScene = new Scene(border);
         primaryStage.setTitle("BibleCompi");
@@ -65,13 +73,13 @@ public class Main extends Application {
 
     private void setupVerseSearchSceneButton(Button verseSearchButton) {
         verseSearchButton.setOnAction(event -> {
-            border.setLeft(VerseSearchSceneLayout.sceneLayout());
+            border.setLeft(verseSearchSceneLayout.sceneLayout());
         });
     }
 
     private void setupWordSearchSceneButton(Button wordSearchButton) {
         wordSearchButton.setOnAction(event -> {
-            border.setLeft(WordSearchSceneLayout.sceneLayout());
+            border.setLeft(wordSearchSceneLayout.sceneLayout());
         });
     }
 

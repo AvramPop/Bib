@@ -38,15 +38,26 @@ public class VerseSearchSceneLayout {
             );
 
     private static VBox rootBox;
-    
-    public static VBox sceneLayout() {
 
+    private static VerseSearchSceneLayout instance = null;
+
+    private VerseSearchSceneLayout() {
         initializations();
         setupTranslationChoiceBox();
         setupVerseSearchButton();
         setupPreviousVerseButton();
         setupNextVerseButton();
         setupVerseSearchScene();
+    }
+
+    public static VerseSearchSceneLayout getInstance() {
+        if(instance == null) {
+            instance = new VerseSearchSceneLayout();
+        }
+        return instance;
+    }
+
+    public static VBox sceneLayout() {
         return rootBox;
     }
 
@@ -83,11 +94,6 @@ public class VerseSearchSceneLayout {
         searchButton.setOnAction(event -> {
             createVerseFromTextField();
             setVerseLabelFromVerse();
-
-            //System.out.println(verse.getNextVerse().text);
-            //System.out.println(verse.getPreviousVerse().text);
-
-            // unfocusVerseTextField();
         });
     }
 
