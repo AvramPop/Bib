@@ -12,14 +12,14 @@ import java.util.logging.Logger;
 public class Main extends Application {
 
     private static Stage primaryStage;
-    private BorderPane border;
+    private static BorderPane border;
     private VerseSearchSceneLayout verseSearchSceneLayout;
     private WordSearchSceneLayout wordSearchSceneLayout;
     private HBox hbox;
     private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, VerseNotFoundException {
 
         setPrimaryStage(primaryStage);
 
@@ -52,7 +52,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public HBox addHBox() {
+    private HBox addHBox() {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
@@ -77,10 +77,13 @@ public class Main extends Application {
         });
     }
 
+    public static BorderPane getMainBox(){
+        return border;
+    }
+
     private void setupWordSearchSceneButton(Button wordSearchButton) {
         wordSearchButton.setOnAction(event -> {
             border.setLeft(wordSearchSceneLayout.sceneLayout());
         });
     }
-
 }

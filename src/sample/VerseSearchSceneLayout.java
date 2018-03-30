@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -57,6 +58,12 @@ public class VerseSearchSceneLayout {
         return instance;
     }
 
+    public static VerseSearchSceneLayout getInstanceWithVerse(Verse verse){
+        VerseSearchSceneLayout.verse = verse;
+        setVerseLabelFromVerse();
+        return instance;
+    }
+
     public static VBox sceneLayout() {
         return rootBox;
     }
@@ -76,7 +83,11 @@ public class VerseSearchSceneLayout {
 
     private static void setupNextVerseButton() {
         nextVerseButton.setOnAction(event -> {
-            verse = verse.getNextVerse();
+            try {
+                verse = verse.getNextVerse();
+            } catch (VerseNotFoundException e) {
+                e.printStackTrace();
+            }
             setVerseLabelFromVerse();
             //unfocusVerseTextField();
         });
@@ -84,7 +95,11 @@ public class VerseSearchSceneLayout {
 
     private static void setupPreviousVerseButton() {
         previousVerseButton.setOnAction(event -> {
-            verse = verse.getPreviousVerse();
+            try {
+                verse = verse.getPreviousVerse();
+            } catch (VerseNotFoundException e) {
+                e.printStackTrace();
+            }
             setVerseLabelFromVerse();
             //unfocusVerseTextField();
         });
@@ -92,8 +107,15 @@ public class VerseSearchSceneLayout {
 
     private static void setupVerseSearchButton() {
         searchButton.setOnAction(event -> {
-            createVerseFromTextField();
-            setVerseLabelFromVerse();
+            boolean success = false;
+            try {
+                createVerseFromTextField();
+                success = true;
+            } catch (VerseNotFoundException e) {
+                verseLabel.setText("Verse not found :(");
+                verseLabel.setTextFill(Color.web("#ff2424"));
+            }
+            if(success) setVerseLabelFromVerse();
         });
     }
 
@@ -124,17 +146,22 @@ public class VerseSearchSceneLayout {
         rootBox.requestFocus();
     }
 
-    private static void createVerseFromTextField() { // refactor without reference to property
-        String[] words = verseReferenceTextField.getText().split("\\s+");
+    private static void createVerseFromTextField() throws VerseNotFoundException { // TODO refactor without reference to property
+        try{
+            String[] words = verseReferenceTextField.getText().split("\\s+");
+            String book = words[0].toLowerCase();
+            book = book.substring(0, 1).toUpperCase() + book.substring(1); // TODO formats book name in order to keep only first letter in capitals
 
-        String book = words[0].toLowerCase();
-        book = book.substring(0, 1).toUpperCase() + book.substring(1); //formats book name in order to keep only first letter in capitals
 
-        verse = new Verse(translation,
-                words[0],
-                Integer.parseInt(words[1]),
-                Integer.parseInt(words[2]));
-        System.out.println(verse.text);
+            verse = new Verse(translation,
+                    words[0],
+                    Integer.parseInt(words[1]),
+                    Integer.parseInt(words[2]));
+
+            System.out.println(verse.text);
+        } catch(Exception e) {
+            throw new VerseNotFoundException("");
+        }
     }
 
     private static void initializations() {
