@@ -113,6 +113,8 @@ public class VerseSearchSceneLayout {
                 success = true;
             } catch (VerseNotFoundException e) {
                 verseLabel.setText("Verse not found :(");
+                referenceLabel.setText("");
+                copyrightLabel.setText("");
                 verseLabel.setTextFill(Color.web("#ff2424"));
             }
             if(success) setVerseLabelFromVerse();
@@ -133,6 +135,7 @@ public class VerseSearchSceneLayout {
         String newlinedVerse = addNewlineAfterWords(verse.text, 6);
         verseLabel.setText(newlinedVerse);
         verseLabel.setFont(Font.font("Serif", FontWeight.NORMAL, Font.getDefault().getSize() + 12));
+        verseLabel.setTextFill(Color.web("#000000"));
         referenceLabel.setText(verse.getFullReference() + " " + verse.translation);
         referenceLabel.setFont(Font.font("Serif", FontWeight.BOLD, Font.getDefault().getSize() + 3));
         String newLinedCopyright = addNewlineAfterWords(verse.getCopyright(), 10);

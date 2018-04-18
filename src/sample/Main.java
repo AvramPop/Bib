@@ -34,10 +34,47 @@ public class Main extends Application {
 
         border.setLeft(verseSearchSceneLayout.sceneLayout());
 
+        /*String testRequestURL = "https://bibles.org/v2/search.js?query=Jesus&version=eng-KJV";
+
+        RESTInvoker invoker = new RESTInvoker(testRequestURL, Constants.bibleOrgKey, Constants.bibleOrgPassword);
+        String result;
+        try {
+            result = invoker.makeGetRequest();
+        } catch (Exception e) {
+            throw new VerseNotFoundException("");
+        }
+        System.out.println(result);*/
+
+        Verse verse = new Verse(Translation.KJV, "Matt", 1, 1);
+        VerseDAO verseDAO = new VerseDAO();
+        VersePOJO versePOJO = new VersePOJO(verse);
+
+        /*for (VersePOJO versePOJO :
+                verseDAO.getAll()) {
+            System.out.println(versePOJO.getText());
+        }*/
+
+
+
         Scene testScene = new Scene(border);
         primaryStage.setTitle("BibleCompi");
         primaryStage.setScene(testScene);
         primaryStage.show();
+
+        /*int index = 2000;
+        versePOJO.setId(index);
+        while(true){
+            verseDAO.add(versePOJO);
+            verse = verse.getNextVerse();
+            System.out.println("Verse " + versePOJO.getBook() + " "
+                                + versePOJO.getChapter() + " " + versePOJO.getVerse() + " successfully added!");
+            versePOJO.setId(index);
+            index++;
+            versePOJO.setVerse(verse.number);
+            versePOJO.setBook(verse.book);
+            versePOJO.setText(verse.text);
+            versePOJO.setChapter(verse.chapter);
+        }*/
     }
 
     private void setPrimaryStage(Stage stage) {
