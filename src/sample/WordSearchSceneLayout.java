@@ -15,12 +15,10 @@ public class WordSearchSceneLayout {
     private static Hyperlink hyperlinks[];
     private static TextField wordSearchTextField;
     private static VBox rootBox;
-    private static Label searchResultsLabel;
     private static String s;
     private static VerseDAO verseDAO;
     private static Label errorLabel;
     private static ScrollPane scrollPane;
-    private static VBox hyperlinksBox;
     private static WordSearchSceneLayout instance = null;
 
     private WordSearchSceneLayout() throws VerseNotFoundException {
@@ -28,11 +26,9 @@ public class WordSearchSceneLayout {
         wordSearchTextField = new PersistentPromptTextField("", "Keyword");
         wordSearchButton = new Button("Search!");
         errorLabel = new Label();
-        searchResultsLabel = new Label();
         verseDAO = new VerseDAO();
         setupWordSearchButtonFromDB();
         scrollPane = new ScrollPane();
-        hyperlinksBox = new VBox();
       //  scrollPane.setContent(hyperlinksBox);
         rootBox.getChildren().addAll(wordSearchTextField, wordSearchButton, scrollPane);
 
@@ -54,7 +50,7 @@ public class WordSearchSceneLayout {
 
         wordSearchButton.setOnAction(event -> {
             String query = wordSearchTextField.getText();
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb;
             hyperlinks = new Hyperlink[5000];
 
             int numberOfHyperlinks = 0;
@@ -136,7 +132,7 @@ public class WordSearchSceneLayout {
 
                             Verse hyperlinkChoseVerse = null;
                             try {
-                                hyperlinkChoseVerse = new Verse(Translation.KJV, //TODO check ESV and NASB error
+                                hyperlinkChoseVerse = new Verse(Translation.KJV,
                                         words[0],
                                         Integer.parseInt(words[1]),
                                         Integer.parseInt(words[3]));

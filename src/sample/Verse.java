@@ -106,14 +106,12 @@ public class Verse {
     }
 
     private String getVerseRequestString() {
-        return new StringBuilder()
-                .append("https://bibles.org/v2/verses/eng-")
-                .append(translation)
-                .append(":").append(book)
-                .append(".").append(chapter)
-                .append(".").append(number)
-                .append(".js")
-                .toString();
+        return "https://bibles.org/v2/verses/eng-" +
+                translation +
+                ":" + book +
+                "." + chapter +
+                "." + number +
+                ".js";
     }
 
     public ArrayList<String> search(String query) throws    IOException, VerseNotFoundException,
@@ -124,15 +122,13 @@ public class Verse {
         int numberOfRequests = 0;
 
         do {
-            StringBuilder stringBuilder = new StringBuilder()
-                    .append("https://bibles.org/v2/search.js?query=")
-                    .append(query)
-                    .append("&version=eng-")
-                    .append("KJV");
 
-           // String testRequestURL = "https://bibles.org/v2/search.js?query=Mahershalalhashbaz";
+            // String testRequestURL = "https://bibles.org/v2/search.js?query=Mahershalalhashbaz";
 
-            String requestURL = stringBuilder.toString();
+            String requestURL = "https://bibles.org/v2/search.js?query=" +
+                    query +
+                    "&version=eng-" +
+                    "KJV";
             RESTInvoker invoker = new RESTInvoker(requestURL, Constants.bibleOrgKey, Constants.bibleOrgPassword);
             String result;
             try {

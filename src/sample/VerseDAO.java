@@ -67,19 +67,9 @@ public class VerseDAO {
                                             String pw) {
 
         loadDriver();
-        DriverManager.setLoginTimeout(60); // wait 1 min; optional: DB may be
-        // busy, good to set a higher
-        // timeout
+        DriverManager.setLoginTimeout(60);
         try {
             String url = new StringBuilder().append("jdbc:").append(type) // “mysql”
-                    // /
-                    // “db2”
-                    // /
-                    // “mssql”
-                    // /
-                    // “oracle”
-                    // /
-                    // ...
                     .append("://").append(host).append(":").append(port).append("/").append(dbName).append("?user=")
                     .append(user).append("&password=").append(pw).toString();
             return DriverManager.getConnection(url);

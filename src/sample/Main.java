@@ -45,7 +45,7 @@ public class Main extends Application {
         }
         System.out.println(result);*/
 
-        Verse verse = new Verse(Translation.KJV, "Matt", 1, 1);
+        Verse verse = new Verse(Translation.KJV, "John", 1, 1);
         VerseDAO verseDAO = new VerseDAO();
         VersePOJO versePOJO = new VersePOJO(verse);
 
@@ -109,9 +109,7 @@ public class Main extends Application {
     }
 
     private void setupVerseSearchSceneButton(Button verseSearchButton) {
-        verseSearchButton.setOnAction(event -> {
-            border.setLeft(verseSearchSceneLayout.sceneLayout());
-        });
+        verseSearchButton.setOnAction(event -> border.setLeft(VerseSearchSceneLayout.sceneLayout()));
     }
 
     public static BorderPane getMainBox(){
@@ -119,8 +117,6 @@ public class Main extends Application {
     }
 
     private void setupWordSearchSceneButton(Button wordSearchButton) {
-        wordSearchButton.setOnAction(event -> {
-            border.setLeft(wordSearchSceneLayout.sceneLayout());
-        });
+        wordSearchButton.setOnAction(event -> border.setLeft(WordSearchSceneLayout.sceneLayout()));
     }
 }

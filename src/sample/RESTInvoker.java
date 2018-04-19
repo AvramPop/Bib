@@ -36,7 +36,7 @@ public class RESTInvoker {
 
             int numCharsRead;
             char[] charArray = new char[1024];
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             while ((numCharsRead = isr.read(charArray)) > 0) {
                 sb.append(charArray, 0, numCharsRead);
             }
@@ -47,8 +47,6 @@ public class RESTInvoker {
             System.out.println("*** END ***");*/
 
             return result;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
