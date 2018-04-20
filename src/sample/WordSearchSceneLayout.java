@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class WordSearchSceneLayout {
-    private static Button wordSearchButton;
-    private static Hyperlink hyperlinks[];
-    private static TextField wordSearchTextField;
-    private static VBox rootBox;
-    private static String s;
-    private static VerseDAO verseDAO;
-    private static Label errorLabel;
-    private static ScrollPane scrollPane;
+    private Button wordSearchButton;
+    private Hyperlink hyperlinks[];
+    private TextField wordSearchTextField;
+    private VBox rootBox;
+    private String s;
+    private VerseDAO verseDAO;
+    private Label errorLabel;
+    private ScrollPane scrollPane;
     private static WordSearchSceneLayout instance = null;
 
     private WordSearchSceneLayout() throws VerseNotFoundException {
@@ -34,18 +34,18 @@ public class WordSearchSceneLayout {
 
     }
 
-    public static WordSearchSceneLayout getInstance() throws VerseNotFoundException {
+    public static VBox getLayout() throws VerseNotFoundException {
         if(instance == null) {
             instance = new WordSearchSceneLayout();
         }
-        return instance;
+        return instance.rootBox;
     }
 
-    public static VBox sceneLayout() {
-        return rootBox;
-    }
+//    public static VBox sceneLayout() {
+//        return rootBox;
+//    }
 
-    private static void setupWordSearchButtonFromDB() {
+    private void setupWordSearchButtonFromDB() {
         hyperlinks = new Hyperlink[50];
 
         wordSearchButton.setOnAction(event -> {
@@ -100,7 +100,7 @@ public class WordSearchSceneLayout {
     }
 
 
-    private static void setupWordSearchButtonFromServer() throws VerseNotFoundException {//
+    private void setupWordSearchButtonFromServer() throws VerseNotFoundException {//
 
         hyperlinks = new Hyperlink[50];
 

@@ -14,7 +14,7 @@ public class Main extends Application {
     private static Stage primaryStage;
     private static BorderPane border;
     private VerseSearchSceneLayout verseSearchSceneLayout;
-    private WordSearchSceneLayout wordSearchSceneLayout;
+ //   private VBox wordSearchSceneLayout;
     private HBox hbox;
     private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
@@ -24,7 +24,7 @@ public class Main extends Application {
         setPrimaryStage(primaryStage);
 
         verseSearchSceneLayout = VerseSearchSceneLayout.getInstance();
-        wordSearchSceneLayout = WordSearchSceneLayout.getInstance();
+       // wordSearchSceneLayout = WordSearchSceneLayout.getLayout();
 
         border = new BorderPane();
         border.setPrefSize(1000, 1000);
@@ -32,7 +32,7 @@ public class Main extends Application {
         hbox = addHBox();
         border.setTop(hbox);
 
-        border.setLeft(verseSearchSceneLayout.sceneLayout());
+        border.setLeft(VerseSearchSceneLayout.sceneLayout());
 
         /*String testRequestURL = "https://bibles.org/v2/search.js?query=Jesus&version=eng-KJV";
 
@@ -117,6 +117,12 @@ public class Main extends Application {
     }
 
     private void setupWordSearchSceneButton(Button wordSearchButton) {
-        wordSearchButton.setOnAction(event -> border.setLeft(WordSearchSceneLayout.sceneLayout()));
+        wordSearchButton.setOnAction(event -> {
+            try {
+                border.setLeft(WordSearchSceneLayout.getLayout());
+            } catch (VerseNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
