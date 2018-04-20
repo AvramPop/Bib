@@ -3,14 +3,8 @@ package sample;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
-import javax.naming.TimeLimitExceededException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class WordSearchSceneLayout {
+public class WordSearchScene {
     private Button wordSearchButton;
     private Hyperlink hyperlinks[];
     private TextField wordSearchTextField;
@@ -19,9 +13,9 @@ public class WordSearchSceneLayout {
     private VerseDAO verseDAO;
     private Label errorLabel;
     private ScrollPane scrollPane;
-    private static WordSearchSceneLayout instance = null;
+    private static WordSearchScene instance = null;
 
-    private WordSearchSceneLayout() throws VerseNotFoundException {
+    private WordSearchScene() {
         rootBox = new VBox();
         wordSearchTextField = new PersistentPromptTextField("", "Keyword");
         wordSearchButton = new Button("Search!");
@@ -29,21 +23,16 @@ public class WordSearchSceneLayout {
         verseDAO = new VerseDAO();
         setupWordSearchButtonFromDB();
         scrollPane = new ScrollPane();
-      //  scrollPane.setContent(hyperlinksBox);
         rootBox.getChildren().addAll(wordSearchTextField, wordSearchButton, scrollPane);
 
     }
 
-    public static VBox getLayout() throws VerseNotFoundException {
+    public static VBox getLayout() {
         if(instance == null) {
-            instance = new WordSearchSceneLayout();
+            instance = new WordSearchScene();
         }
         return instance.rootBox;
     }
-
-//    public static VBox sceneLayout() {
-//        return rootBox;
-//    }
 
     private void setupWordSearchButtonFromDB() {
         hyperlinks = new Hyperlink[50];
@@ -57,7 +46,6 @@ public class WordSearchSceneLayout {
             for(VersePOJO versePojo : verseDAO.getAll()) {
                 if (versePojo.getText().contains(query)) {
                     Hyperlink hyperlink = new Hyperlink();
-                   // System.out.println(versePojo.getText());
                     sb = new StringBuilder();
                     sb.append(versePojo.getBook()).append(" ").append(versePojo.getChapter()).
                                                     append(":").append(versePojo.getVerse());
@@ -73,15 +61,11 @@ public class WordSearchSceneLayout {
                                     words[0],
                                     Integer.parseInt(words[1]),
                                     Integer.parseInt(words[3]));
-                           // System.out.println(hyperlinkChosenVerse.getFullReference());
                         } catch (VerseNotFoundException e) {
                             e.printStackTrace();
                         }
 
-                       // VerseSearchSceneLayout.getInstance().setVerse(hyperlinkChosenVerse);
-                        //VerseSearchSceneLayout.getLayout();
-                        //VerseSearchSceneLayout.getInstanceWithVerse(hyperlinkChosenVerse);
-                        Main.getMainBox().setLeft(VerseSearchSceneLayout.getLayout(hyperlinkChosenVerse));
+                        Main.getMainBox().setLeft(VerseSearchScene.getLayout(hyperlinkChosenVerse));
 
                     });
                     hyperlinks[numberOfHyperlinks] = hyperlink;
@@ -142,8 +126,7 @@ public class WordSearchSceneLayout {
                                 e.printStackTrace();
                             }
 
-                            VerseSearchSceneLayout.getInstanceWithVerse(hyperlinkChoseVerse);
-                            Main.getMainBox().setLeft(VerseSearchSceneLayout.sceneLayout());
+                            Main.getMainBox().setLeft(VerseSearchScene.getLayout(hyperlinkChosenVerse));
 
                         });
                         hyperlinks[numberOfHyperlinks] = hyperlink;

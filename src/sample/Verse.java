@@ -6,7 +6,6 @@ import org.jsoup.Jsoup;
 
 import javax.naming.TimeLimitExceededException;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 
 public class Verse {
@@ -31,7 +30,6 @@ public class Verse {
     }
 
     private String getVerse() throws VerseNotFoundException {
-        //  String requestURL = "https://bibles.org/v2/verses/eng-GNTD:Acts.8.34.js";
 
         String requestURL = getVerseRequestString();
         RESTInvoker invoker = new RESTInvoker(requestURL, Constants.bibleOrgKey, Constants.bibleOrgPassword);
@@ -122,9 +120,6 @@ public class Verse {
         int numberOfRequests = 0;
 
         do {
-
-            // String testRequestURL = "https://bibles.org/v2/search.js?query=Mahershalalhashbaz";
-
             String requestURL = "https://bibles.org/v2/search.js?query=" +
                     query +
                     "&version=eng-" +

@@ -6,25 +6,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import java.io.IOException;
+
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main extends Application {
 
     private static Stage primaryStage;
     private static BorderPane border;
-   // private VerseSearchSceneLayout verseSearchSceneLayout;
- //   private VBox wordSearchSceneLayout;
     private HBox hbox;
     private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     @Override
-    public void start(Stage primaryStage) throws IOException, VerseNotFoundException {
+    public void start(Stage primaryStage) throws VerseNotFoundException {
 
         setPrimaryStage(primaryStage);
-
-       // verseSearchSceneLayout = VerseSearchSceneLayout.getInstance();
-       // wordSearchSceneLayout = WordSearchSceneLayout.getLayout();
 
         border = new BorderPane();
         border.setPrefSize(1000, 1000);
@@ -32,56 +28,22 @@ public class Main extends Application {
         hbox = addHBox();
         border.setTop(hbox);
 
-        border.setLeft(VerseSearchSceneLayout.getLayout());
+        LOGGER.setLevel(Level.INFO);
+        LOGGER.info("Logging an INFO-level message");
 
-        /*String testRequestURL = "https://bibles.org/v2/search.js?query=Jesus&version=eng-KJV";
-
-        RESTInvoker invoker = new RESTInvoker(testRequestURL, Constants.bibleOrgKey, Constants.bibleOrgPassword);
-        String result;
-        try {
-            result = invoker.makeGetRequest();
-        } catch (Exception e) {
-            throw new VerseNotFoundException("");
-        }
-        System.out.println(result);*/
-
-        Verse verse = new Verse(Translation.KJV, "John", 1, 1);
-        VerseDAO verseDAO = new VerseDAO();
-        VersePOJO versePOJO = new VersePOJO(verse);
-
-        /*for (VersePOJO versePOJO :
-                verseDAO.getAll()) {
-            System.out.println(versePOJO.getText());
-        }*/
-
-
+        border.setLeft(VerseSearchScene.getLayout());
 
         Scene testScene = new Scene(border);
         primaryStage.setTitle("BibleCompi");
         primaryStage.setScene(testScene);
         primaryStage.show();
-
-        /*int index = 2000;
-        versePOJO.setId(index);
-        while(true){
-            verseDAO.add(versePOJO);
-            verse = verse.getNextVerse();
-            System.out.println("Verse " + versePOJO.getBook() + " "
-                                + versePOJO.getChapter() + " " + versePOJO.getVerse() + " successfully added!");
-            versePOJO.setId(index);
-            index++;
-            versePOJO.setVerse(verse.number);
-            versePOJO.setBook(verse.book);
-            versePOJO.setText(verse.text);
-            versePOJO.setChapter(verse.chapter);
-        }*/
     }
 
     private void setPrimaryStage(Stage stage) {
         Main.primaryStage = stage;
     }
 
-    static public Stage getPrimaryStage() {
+    public static Stage getPrimaryStage() {
         return Main.primaryStage;
     }
 
@@ -109,7 +71,7 @@ public class Main extends Application {
     }
 
     private void setupVerseSearchSceneButton(Button verseSearchButton) {
-        verseSearchButton.setOnAction(event -> border.setLeft(VerseSearchSceneLayout.getLayout()));
+        verseSearchButton.setOnAction(event -> border.setLeft(VerseSearchScene.getLayout()));
     }
 
     public static BorderPane getMainBox(){
@@ -117,12 +79,6 @@ public class Main extends Application {
     }
 
     private void setupWordSearchSceneButton(Button wordSearchButton) {
-        wordSearchButton.setOnAction(event -> {
-            try {
-                border.setLeft(WordSearchSceneLayout.getLayout());
-            } catch (VerseNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
+        wordSearchButton.setOnAction(event -> border.setLeft(WordSearchScene.getLayout()));
     }
 }

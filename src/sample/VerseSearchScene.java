@@ -12,7 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
-public class VerseSearchSceneLayout {
+public class VerseSearchScene {
 
     private ChoiceBox<Translation> translationChoiceBox;
     private Button searchButton;
@@ -35,9 +35,9 @@ public class VerseSearchSceneLayout {
 
     private VBox rootBox;
 
-    private static VerseSearchSceneLayout instance = null;
+    private static VerseSearchScene instance = null;
 
-    private VerseSearchSceneLayout() {
+    private VerseSearchScene() {
         initializations();
         setupTranslationChoiceBox();
         setupVerseSearchButton();
@@ -48,46 +48,21 @@ public class VerseSearchSceneLayout {
 
     public static VBox getLayout() {
         if(instance == null) {
-            instance = new VerseSearchSceneLayout();
+            instance = new VerseSearchScene();
         }
-       // System.out.println("Created verse " + verse.getFullReference());
         return instance.rootBox;
     }
 
     public static VBox getLayout(Verse verse) {
         if(instance == null) {
-            instance = new VerseSearchSceneLayout();
+            instance = new VerseSearchScene();
         }
         instance.verse = verse;
+        instance.verseReferenceTextField.setText(verse.getFullReference().replaceAll(":", " "));
         instance.setVerseLabelFromVerse();
-        // System.out.println("Created verse " + verse.getFullReference());
         return instance.rootBox;
     }
 
-   /* public static VerseSearchSceneLayout getInstance() {
-        if(instance == null) {
-            instance = new VerseSearchSceneLayout();
-        }
-        return instance;
-    }*/
-
-   /* void setVerse(Verse verse){
-        VerseSearchSceneLayout.verse = verse;
-    }*/
-
-    /*public static VBox getLayout(Verse verse){
-        if(instance == null) {
-            instance = new VerseSearchSceneLayout();
-        }
-        this.verse = verse;
-        setVerseLabelFromVerse();
-        return instance.rootBox;
-    }*/
-
-    /*public static VBox sceneLayout() {
-        return rootBox;
-    }
-*/
     private void setupVerseSearchScene() {
         verseInputGridPane.add(verseReferenceTextField, 0, 0);
         verseInputGridPane.add(translationChoiceBox, 1, 0);
