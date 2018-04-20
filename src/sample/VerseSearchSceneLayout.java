@@ -14,18 +14,18 @@ import javafx.scene.text.FontWeight;
 
 public class VerseSearchSceneLayout {
 
-    private static ChoiceBox<Translation> translationChoiceBox;
-    private static Button searchButton;
-    private static Button previousVerseButton;
-    private static Button nextVerseButton;
+    private ChoiceBox<Translation> translationChoiceBox;
+    private Button searchButton;
+    private Button previousVerseButton;
+    private Button nextVerseButton;
     private static Verse verse;
-    private static Label verseLabel;
-    private static Label referenceLabel;
-    private static Label copyrightLabel;
-    private static TextField verseReferenceTextField;
-    private static Translation translation;
-    private static GridPane buttonsGridPane;
-    private static GridPane verseInputGridPane;
+    private Label verseLabel;
+    private Label referenceLabel;
+    private Label copyrightLabel;
+    private TextField verseReferenceTextField;
+    private Translation translation;
+    private GridPane buttonsGridPane;
+    private GridPane verseInputGridPane;
     private static final Font ITALIC_FONT =
             Font.font(
                     "Serif",
@@ -33,7 +33,7 @@ public class VerseSearchSceneLayout {
                     Font.getDefault().getSize()
             );
 
-    private static VBox rootBox;
+    private VBox rootBox;
 
     private static VerseSearchSceneLayout instance = null;
 
@@ -46,24 +46,49 @@ public class VerseSearchSceneLayout {
         setupVerseSearchScene();
     }
 
-    public static VerseSearchSceneLayout getInstance() {
+    public static VBox getLayout() {
+        if(instance == null) {
+            instance = new VerseSearchSceneLayout();
+        }
+       // System.out.println("Created verse " + verse.getFullReference());
+        return instance.rootBox;
+    }
+
+    public static VBox getLayout(Verse verse) {
+        if(instance == null) {
+            instance = new VerseSearchSceneLayout();
+        }
+        instance.verse = verse;
+        instance.setVerseLabelFromVerse();
+        // System.out.println("Created verse " + verse.getFullReference());
+        return instance.rootBox;
+    }
+
+   /* public static VerseSearchSceneLayout getInstance() {
         if(instance == null) {
             instance = new VerseSearchSceneLayout();
         }
         return instance;
-    }
+    }*/
 
-    public static VerseSearchSceneLayout getInstanceWithVerse(Verse verse){
+   /* void setVerse(Verse verse){
         VerseSearchSceneLayout.verse = verse;
-        setVerseLabelFromVerse();
-        return instance;
-    }
+    }*/
 
-    public static VBox sceneLayout() {
+    /*public static VBox getLayout(Verse verse){
+        if(instance == null) {
+            instance = new VerseSearchSceneLayout();
+        }
+        this.verse = verse;
+        setVerseLabelFromVerse();
+        return instance.rootBox;
+    }*/
+
+    /*public static VBox sceneLayout() {
         return rootBox;
     }
-
-    private static void setupVerseSearchScene() {
+*/
+    private void setupVerseSearchScene() {
         verseInputGridPane.add(verseReferenceTextField, 0, 0);
         verseInputGridPane.add(translationChoiceBox, 1, 0);
 
@@ -76,7 +101,7 @@ public class VerseSearchSceneLayout {
                 referenceLabel, copyrightLabel);
     }
 
-    private static void setupNextVerseButton() {
+    private void setupNextVerseButton() {
         nextVerseButton.setOnAction(event -> {
             try {
                 verse = verse.getNextVerse();
@@ -88,7 +113,7 @@ public class VerseSearchSceneLayout {
         });
     }
 
-    private static void setupPreviousVerseButton() {
+    private void setupPreviousVerseButton() {
         previousVerseButton.setOnAction(event -> {
             try {
                 verse = verse.getPreviousVerse();
@@ -100,7 +125,7 @@ public class VerseSearchSceneLayout {
         });
     }
 
-    private static void setupVerseSearchButton() {
+    private void setupVerseSearchButton() {
         searchButton.setOnAction(event -> {
             boolean success = false;
             try {
@@ -116,7 +141,7 @@ public class VerseSearchSceneLayout {
         });
     }
 
-    private static void setupTranslationChoiceBox() {
+    private void setupTranslationChoiceBox() {
         // translationChoiceBox.getSelectionModel().select(0);
         translationChoiceBox.getSelectionModel()
                 .selectedItemProperty()
@@ -126,7 +151,7 @@ public class VerseSearchSceneLayout {
                         -> translation = newTranslation);
     }
 
-    private static void setVerseLabelFromVerse() {
+    private void setVerseLabelFromVerse() {
         String newlinedVerse = addNewlineAfterWords(verse.text, 6);
         verseLabel.setText(newlinedVerse);
         verseLabel.setFont(Font.font("Serif", FontWeight.NORMAL, Font.getDefault().getSize() + 12));
@@ -139,12 +164,12 @@ public class VerseSearchSceneLayout {
         copyrightLabel.setFont(ITALIC_FONT);
     }
 
-    private static void unfocusVerseTextField() {
+    private void unfocusVerseTextField() {
         verseReferenceTextField.clear();
         rootBox.requestFocus();
     }
 
-    private static void createVerseFromTextField() throws VerseNotFoundException { // TODO refactor without reference to property
+    private void createVerseFromTextField() throws VerseNotFoundException { // TODO refactor without reference to property
         try{
             String[] words = verseReferenceTextField.getText().split("\\s+");
             String book = words[0].toLowerCase();
@@ -162,7 +187,7 @@ public class VerseSearchSceneLayout {
         }
     }
 
-    private static void initializations() {
+    private void initializations() {
         rootBox = new VBox();
         buttonsGridPane = new GridPane();
         verseInputGridPane = new GridPane();
@@ -181,7 +206,7 @@ public class VerseSearchSceneLayout {
         unfocusVerseTextFieldAtStart();
     }
 
-    private static void unfocusVerseTextFieldAtStart() {
+    private void unfocusVerseTextFieldAtStart() {
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
         verseReferenceTextField.focusedProperty().addListener((observable,  oldValue,  newValue) -> {
@@ -192,7 +217,7 @@ public class VerseSearchSceneLayout {
         });
     }
 
-    private static String addNewlineAfterWords(String source, int numberOfWords){
+    private String addNewlineAfterWords(String source, int numberOfWords){
         final String[] tokenedVerse = source.split(" ");
         final StringBuilder newString = new StringBuilder();
 

@@ -78,8 +78,10 @@ public class WordSearchSceneLayout {
                             e.printStackTrace();
                         }
 
-                        VerseSearchSceneLayout.getInstanceWithVerse(hyperlinkChosenVerse);
-                        Main.getMainBox().setLeft(VerseSearchSceneLayout.sceneLayout());
+                       // VerseSearchSceneLayout.getInstance().setVerse(hyperlinkChosenVerse);
+                        //VerseSearchSceneLayout.getLayout();
+                        //VerseSearchSceneLayout.getInstanceWithVerse(hyperlinkChosenVerse);
+                        Main.getMainBox().setLeft(VerseSearchSceneLayout.getLayout(hyperlinkChosenVerse));
 
                     });
                     hyperlinks[numberOfHyperlinks] = hyperlink;
@@ -100,7 +102,7 @@ public class WordSearchSceneLayout {
     }
 
 
-    private void setupWordSearchButtonFromServer() throws VerseNotFoundException {//
+   /* private void setupWordSearchButtonFromServer() throws VerseNotFoundException {//
 
         hyperlinks = new Hyperlink[50];
 
@@ -170,5 +172,5 @@ public class WordSearchSceneLayout {
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 }

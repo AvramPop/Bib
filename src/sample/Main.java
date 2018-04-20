@@ -13,7 +13,7 @@ public class Main extends Application {
 
     private static Stage primaryStage;
     private static BorderPane border;
-    private VerseSearchSceneLayout verseSearchSceneLayout;
+   // private VerseSearchSceneLayout verseSearchSceneLayout;
  //   private VBox wordSearchSceneLayout;
     private HBox hbox;
     private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
@@ -23,7 +23,7 @@ public class Main extends Application {
 
         setPrimaryStage(primaryStage);
 
-        verseSearchSceneLayout = VerseSearchSceneLayout.getInstance();
+       // verseSearchSceneLayout = VerseSearchSceneLayout.getInstance();
        // wordSearchSceneLayout = WordSearchSceneLayout.getLayout();
 
         border = new BorderPane();
@@ -32,7 +32,7 @@ public class Main extends Application {
         hbox = addHBox();
         border.setTop(hbox);
 
-        border.setLeft(VerseSearchSceneLayout.sceneLayout());
+        border.setLeft(VerseSearchSceneLayout.getLayout());
 
         /*String testRequestURL = "https://bibles.org/v2/search.js?query=Jesus&version=eng-KJV";
 
@@ -109,7 +109,7 @@ public class Main extends Application {
     }
 
     private void setupVerseSearchSceneButton(Button verseSearchButton) {
-        verseSearchButton.setOnAction(event -> border.setLeft(VerseSearchSceneLayout.sceneLayout()));
+        verseSearchButton.setOnAction(event -> border.setLeft(VerseSearchSceneLayout.getLayout()));
     }
 
     public static BorderPane getMainBox(){
