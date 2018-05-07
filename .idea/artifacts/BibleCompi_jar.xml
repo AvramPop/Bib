@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BibleCompi:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BibleCompi_jar</output-path>
+    <root id="archive" name="BibleCompi.jar">
+      <element id="module-output" name="BibleCompi" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jsoup-1.11.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jackson-databind-2.1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jackson-annotations-2.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/postgresql-42.1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jackson-core-2.2.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

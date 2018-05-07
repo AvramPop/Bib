@@ -3,6 +3,11 @@ package sample;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+
+import javax.naming.TimeLimitExceededException;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class WordSearchScene {
     private Button wordSearchButton;
@@ -22,6 +27,7 @@ public class WordSearchScene {
         errorLabel = new Label();
         verseDAO = new VerseDAO();
         setupWordSearchButtonFromDB();
+        // setupWordSearchButtonFromServer();
         scrollPane = new ScrollPane();
         rootBox.getChildren().addAll(wordSearchTextField, wordSearchButton, scrollPane);
 
@@ -86,7 +92,7 @@ public class WordSearchScene {
     }
 
 
-   /* private void setupWordSearchButtonFromServer() throws VerseNotFoundException {//
+    private void setupWordSearchButtonFromServer() throws VerseNotFoundException {//
 
         hyperlinks = new Hyperlink[50];
 
@@ -111,14 +117,13 @@ public class WordSearchScene {
                             System.out.println(s);
                             String[] words = hyperlink.getText().split("\\s+|(?=\\p{Punct})|(?<=\\p{Punct})");
 
-                            Arrays.stream(words).forEach(System.out::println);
 
                             String book = words[0].toLowerCase();
                             book = book.substring(0, 1).toUpperCase() + book.substring(1); //formats book name in order to keep only first letter in capitals
 
-                            Verse hyperlinkChoseVerse = null;
+                            Verse hyperlinkChosenVerse = null;
                             try {
-                                hyperlinkChoseVerse = new Verse(Translation.KJV,
+                                hyperlinkChosenVerse = new Verse(Translation.KJV,
                                         words[0],
                                         Integer.parseInt(words[1]),
                                         Integer.parseInt(words[3]));
@@ -145,15 +150,13 @@ public class WordSearchScene {
                     errorLabel.setText("Request time limit exceeded!");
                     errorLabel.setTextFill(Color.web("#ff2424"));
                     rootBox.getChildren().add(errorLabel);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (VerseNotFoundException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (VerseNotFoundException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
-    }*/
+    }
 }
